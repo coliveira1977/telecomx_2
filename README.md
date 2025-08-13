@@ -1,3 +1,17 @@
+Objetivos do Desafio
+Preparar os dados para a modelagem (tratamento, encoding, normalização).
+
+Realizar análise de correlação e seleção de variáveis.
+
+Treinar dois ou mais modelos de classificação.
+
+Avaliar o desempenho dos modelos com métricas.
+
+Interpretar os resultados, incluindo a importância das variáveis.
+
+Criar uma conclusão estratégica apontando os principais fatores que influenciam a evasão.
+
+
 Linhas removidas: 224
 Colunas disponíveis: ['customerID', 'Churn', 'customer_gender', 'customer_SeniorCitizen', 'customer_Partner', 'customer_Dependents', 'customer_tenure', 'phone_PhoneService', 'phone_MultipleLines', 'internet_InternetService', 'internet_OnlineSecurity', 'internet_OnlineBackup', 'internet_DeviceProtection', 'internet_TechSupport', 'internet_StreamingTV', 'internet_StreamingMovies', 'account_Contract', 'account_PaperlessBilling', 'account_PaymentMethod', 'account_Charges_Monthly', 'account_Charges_Total']
 
