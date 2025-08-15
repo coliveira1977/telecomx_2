@@ -7,14 +7,18 @@ from sklearn.metrics import classification_report, confusion_matrix, roc_auc_sco
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# PDF
+from matplotlib.backends.backend_pdf import PdfPages
+
 # 1) Limpeza de linhas com campos nulos
 df = pd.read_csv('telecomx_normalizado.csv')
 df_clean = df.dropna()
 log_output = []
-log_output.append(f"Linhas removidas: {len(df) - len(df_clean)}\n")
-
-# Verifique as colunas disponíveis
-log_output.append("Colunas disponíveis: " + str(df_clean.columns.tolist()) + "\n")
+log_output.append(f"# Relatório de Análise de Churn\n\n")
+log_output.append(f"## 1. Limpeza de Dados\n\n")
+log_output.append(f"- **Linhas removidas:** {len(df) - len(df_clean)}\n")
+log_output.append("- **Colunas disponíveis:**\n")
+log_output.append(f"  ```\n  {df_clean.columns.tolist()}\n  ```\n\n")
 
 # Ajuste o nome da coluna de churn conforme necessário
 churn_col = None
@@ -47,7 +51,22 @@ X_train, X_test, y_train, y_test, ids_train, ids_test = train_test_split(
 )
 _, _, y_train_reg, y_test_reg = train_test_split(X, y_reg, test_size=0.2, random_state=42)
 
-# Modelos
+# 2) Matriz de correlação e visualização
+corr = df_clean.select_dtypes(include=[np.number]).corr()
+plt.figure(figsize=(12, 8))
+sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm")
+plt.title("Matriz de Correlação das Variáveis Numéricas")
+plt.tight_layout()
+plt.savefig("correlation_matrix.png")
+plt.close()
+
+# Adiciona análise da matriz de correlação ao relatório
+log_output.append("---\n\n")
+log_output.append("## 2. Matriz de Correlação\n\n")
+log_output.append("A matriz de correlação das variáveis numéricas foi gerada para identificar relações relevantes. Variáveis com maior correlação (positiva ou negativa) com a evasão (Churn) são candidatas importantes para o modelo preditivo.\n\n")
+log_output.append("O gráfico foi salvo como `correlation_matrix.png`.\n\n")
+
+# 3) Modelos
 logreg = LogisticRegression(max_iter=1000)
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 
@@ -55,7 +74,7 @@ rf = RandomForestClassifier(n_estimators=100, random_state=42)
 logreg.fit(X_train, y_train)
 rf.fit(X_train, y_train)
 
-# 3) Modelo preditivo de churn
+# 4) Modelo preditivo de churn
 y_pred = rf.predict(X_test)
 y_proba = rf.predict_proba(X_test)[:, 1]
 
@@ -65,38 +84,45 @@ report_df['customerID'] = ids_test.values
 report_df['churn_proba'] = y_proba
 top_100_churn = report_df.sort_values('churn_proba', ascending=False).head(100)
 
-# 4) Relatório detalhado
-log_output.append("\n--- Relatório Quantitativo ---\n")
-log_output.append("Random Forest Classification Report:\n")
-log_output.append(classification_report(y_test, y_pred) + "\n")
-log_output.append("Confusion Matrix:\n")
+# 5) Relatório detalhado
+log_output.append("---\n\n")
+log_output.append("## 3. Relatório Quantitativo\n\n")
+log_output.append("### Random Forest Classification Report\n\n")
+log_output.append("```\n")
+log_output.append(classification_report(y_test, y_pred))
+log_output.append("```\n\n")
+log_output.append("**Confusion Matrix:**\n")
+log_output.append("```\n")
 log_output.append(str(confusion_matrix(y_test, y_pred)) + "\n")
-log_output.append(f"ROC AUC: {roc_auc_score(y_test.map({'No': 0, 'Yes': 1}), y_proba):.2f}\n")
-
-# Regressão Linear para análise de relação entre variáveis e churn
+log_output.append("```\n\n")
+log_output.append(f"- **ROC AUC:** {roc_auc_score(y_test.map({'No': 0, 'Yes': 1}), y_proba):.2f}\n")
 linreg = LinearRegression()
 linreg.fit(X_train, y_train_reg)
 y_pred_lr = linreg.predict(X_test)
-log_output.append(f"Linear Regression MSE: {mean_squared_error(y_test_reg, y_pred_lr):.4f}\n")
+log_output.append(f"- **Linear Regression MSE:** {mean_squared_error(y_test_reg, y_pred_lr):.4f}\n\n")
 
-# 5) Relatório Qualitativo e Soluções
-log_output.append("\n--- Relatório Qualitativo ---\n")
-log_output.append("Top 100 clientes com maior risco de churn:\n")
-log_output.append(top_100_churn[['customerID', 'churn_proba']].to_string(index=False) + "\n")
+# 6) Relatório Qualitativo e Soluções
+log_output.append("---\n\n")
+log_output.append("## 4. Relatório Qualitativo\n\n")
+log_output.append("### Top 100 Clientes com Maior Risco de Churn\n\n")
+log_output.append(top_100_churn[['customerID', 'churn_proba']].to_string(index=False) + "\n\n")
+log_output.append("> **Obs:** A lista completa está disponível no arquivo `top_100_churn_clients.csv`.\n\n")
 
 # Salva o relatório detalhado dos clientes em CSV
 top_100_churn.to_csv('top_100_churn_clients.csv', index=False)
 
-log_output.append("\nDescrição detalhada da predição:\n")
-log_output.append("O modelo Random Forest identificou os 100 clientes acima como os mais propensos a churn, com base em padrões históricos.\n")
+log_output.append("---\n\n")
+log_output.append("### Descrição Detalhada da Predição\n\n")
+log_output.append("O modelo **Random Forest** identificou os 100 clientes acima como os mais propensos a churn, com base em padrões históricos.\n\n")
 
-log_output.append("\nSoluções para reverter o churn:\n")
+log_output.append("---\n\n")
+log_output.append("### Soluções para Reverter o Churn\n\n")
 log_output.append("- Oferecer planos personalizados para clientes de alto risco.\n")
 log_output.append("- Melhorar o atendimento ao cliente para segmentos críticos.\n")
 log_output.append("- Monitorar métricas de uso e satisfação em tempo real.\n")
-log_output.append("- Implementar campanhas de retenção direcionadas.\n")
+log_output.append("- Implementar campanhas de retenção direcionadas.\n\n")
 
-# Visualização das features mais importantes
+# 7) Visualização das features mais importantes
 importances = rf.feature_importances_
 feat_names = X.columns
 feat_imp = pd.Series(importances, index=feat_names).sort_values(ascending=False)
@@ -107,8 +133,26 @@ plt.tight_layout()
 plt.savefig("feature_importance.png")
 plt.close()
 
-log_output.append("\nGráfico de importância das features salvo como 'feature_importance.png'.\n")
+log_output.append("---\n\n")
+log_output.append("## 5. Importância das Features\n\n")
+log_output.append("O gráfico de importância das features foi salvo como:\n**`feature_importance.png`**\n\n")
 
 # Salva o relatório no README.md
 with open("README.md", "w", encoding="utf-8") as f:
     f.writelines(log_output)
+
+# Geração do PDF com gráficos
+with PdfPages('relatorio_churn.pdf') as pdf:
+    # Matriz de correlação
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm")
+    plt.title("Matriz de Correlação das Variáveis Numéricas")
+    plt.tight_layout()
+    pdf.savefig()
+    plt.close()
+    # Importância das features
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=feat_imp, y=feat_imp.index)
+    plt.title('Importância das Features para Churn')
+    plt.tight_layout()
+    pdf.savefig()
