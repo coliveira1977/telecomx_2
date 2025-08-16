@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, accuracy_score
+from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, accuracy_score, recall_score, f1_score
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -31,21 +31,26 @@ X = pd.get_dummies(X, drop_first=True)
 y_bin = y.map({'No': 0, 'Yes': 1})
 
 # Split dos dados
-X_train, X_test, y_train, y_test = train_test_split(X, y_bin, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y_bin, test_size=0.2, random_state=42, stratify=y_bin
+)
 
-# Treinamento da Regressão Logística
-logreg = LogisticRegression(max_iter=1000)
+# Treinamento da Regressão Logística com balanceamento de classes
+logreg = LogisticRegression(max_iter=1000, class_weight='balanced')
 logreg.fit(X_train, y_train)
 
-# Predições
-y_pred = logreg.predict(X_test)
+# Predições com threshold ajustado para aumentar recall do YES
 y_proba = logreg.predict_proba(X_test)[:, 1]
+threshold = 0.35  # threshold menor para aumentar recall da classe YES
+y_pred = np.where(y_proba > threshold, 1, 0)
 
 # Métricas
 acc = accuracy_score(y_test, y_pred)
 roc_auc = roc_auc_score(y_test, y_proba)
 report = classification_report(y_test, y_pred)
 cm = confusion_matrix(y_test, y_pred)
+recall_yes = recall_score(y_test, y_pred)
+f1_yes = f1_score(y_test, y_pred)
 
 # Coeficientes
 coef_df = pd.DataFrame({
@@ -65,9 +70,11 @@ plt.close()
 regressao_md = []
 regressao_md.append("\n---\n")
 regressao_md.append("## 6. Análise de Regressão Logística\n\n")
-regressao_md.append("A regressão logística foi utilizada para identificar o impacto das variáveis no risco de churn.\n\n")
+regressao_md.append("A regressão logística foi utilizada para identificar o impacto das variáveis no risco de churn. O modelo foi ajustado para priorizar o acerto da classe YES (clientes que vão dar churn), utilizando balanceamento de classes e threshold reduzido.\n\n")
 regressao_md.append(f"**Acurácia:** {acc:.2f}\n\n")
 regressao_md.append(f"**ROC AUC:** {roc_auc:.2f}\n\n")
+regressao_md.append(f"**Recall classe YES:** {recall_yes:.2f}\n\n")
+regressao_md.append(f"**F1-score classe YES:** {f1_yes:.2f}\n\n")
 regressao_md.append("**Classification Report:**\n")
 regressao_md.append("```\n" + report + "```\n\n")
 regressao_md.append("**Confusion Matrix:**\n")
