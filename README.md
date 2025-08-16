@@ -20,27 +20,29 @@ O gráfico foi salvo como `correlation_matrix.png`.
 
 ## 3. Relatório Quantitativo
 
-### Random Forest Classification Report
+### Random Forest Classification Report (threshold ajustado)
 
 ```
               precision    recall  f1-score   support
 
-          No       0.82      0.93      0.87      1036
-         Yes       0.68      0.43      0.53       373
+          No       0.95      0.29      0.44      1035
+         Yes       0.33      0.96      0.49       374
 
-    accuracy                           0.80      1409
-   macro avg       0.75      0.68      0.70      1409
-weighted avg       0.78      0.80      0.78      1409
+    accuracy                           0.47      1409
+   macro avg       0.64      0.62      0.47      1409
+weighted avg       0.78      0.47      0.46      1409
 ```
 
 **Confusion Matrix:**
 ```
-[[960  76]
- [212 161]]
+[[300 735]
+ [ 16 358]]
 ```
 
-- **ROC AUC:** 0.83
-- **Linear Regression MSE:** 0.3095
+- **ROC AUC:** 0.82
+- **Recall classe YES:** 0.96
+- **F1-score classe YES:** 0.49
+- **Linear Regression MSE:** 0.2249
 
 ---
 
@@ -49,106 +51,106 @@ weighted avg       0.78      0.80      0.78      1409
 ### Top 100 Clientes com Maior Risco de Churn
 
 customerID  churn_proba
-2737-YNGYW     0.950000
-3878-AVSOQ     0.923333
-8000-REIQB     0.921333
-9488-HGMJH     0.916667
-4614-NUVZD     0.913333
-4988-IQIGL     0.906000
-9728-FTTVZ     0.900833
-9985-MWVIX     0.900000
-6567-HOOPW     0.900000
-6856-RAURS     0.885000
-2215-ZAFGX     0.880000
-3320-VEOYC     0.870000
-5494-HECPR     0.870000
-4822-RVYBB     0.870000
-9057-SIHCH     0.870000
-7409-KIUTL     0.866667
-4912-PIGUY     0.860000
-8087-LGYHQ     0.860000
-2034-GDRCN     0.860000
-9605-WGJVW     0.858333
-0021-IKXGC     0.856667
-1761-AEZZR     0.850000
-3707-GNWHM     0.850000
-0325-XBFAC     0.840000
-8086-OVPWV     0.840000
-4510-HIMLV     0.834083
-6969-MVBAI     0.830000
-2012-NWRPA     0.830000
-5567-WSELE     0.830000
-1455-UGQVH     0.830000
-8884-ADFVN     0.830000
-0488-GSLFR     0.820167
-1184-PJVDB     0.820000
-5797-APWZC     0.820000
-3027-ZTDHO     0.820000
-0697-ZMSWS     0.820000
-5356-RHIPP     0.816061
-3370-HXOPH     0.810000
-9231-ZJYAM     0.810000
-9837-BMCLM     0.810000
-4548-SDBKE     0.810000
-7526-BEZQB     0.810000
-1766-GKNMI     0.810000
-6357-JJPQT     0.810000
-5348-CAGXB     0.800000
-8414-MYSHR     0.800000
-8361-LTMKD     0.800000
-8875-AKBYH     0.800000
-9025-AOMKI     0.800000
-0670-KDOMA     0.799583
-0023-HGHWL     0.790000
-1751-NCDLI     0.790000
-1508-DFXCU     0.790000
-1567-DSCIC     0.790000
-1143-NMNQJ     0.790000
-8443-ZRDBZ     0.790000
-6680-WKXRZ     0.790000
-0637-KVDLV     0.786000
-8873-GLDMH     0.785000
-7594-RQHXR     0.783333
-4581-SSPWD     0.780000
-4713-LZDRV     0.780000
-3295-YVUSR     0.780000
-4927-WWOOZ     0.780000
-1866-RZZQS     0.770000
-5445-UTODQ     0.770000
-5835-BEQEU     0.770000
-1569-TTNYJ     0.770000
-3254-YRILK     0.770000
-2262-SLNVK     0.766667
-5032-MIYKT     0.762500
-7028-DVOIQ     0.760000
-7932-WPTDS     0.760000
-0334-GDDSO     0.760000
-1086-LXKFY     0.750000
-9282-IZGQK     0.750000
-7493-TPUWZ     0.750000
-6435-SRWBJ     0.750000
-6618-RYATB     0.750000
-0689-NKYLF     0.750000
-5976-JCJRH     0.750000
-3841-CONLJ     0.750000
-4110-PFEUZ     0.744167
-9965-YOKZB     0.740000
-3677-IYRBF     0.740000
-4597-NUCQV     0.740000
-9185-TQCVP     0.730000
-7823-JSOAG     0.720000
-9685-WKZGT     0.720000
-5564-NEMQO     0.720000
-2845-AFFTX     0.720000
-2800-VEQXM     0.710000
-7969-AULMZ     0.710000
-3138-BKYAV     0.710000
-6615-NGGZJ     0.710000
-9944-HKVVB     0.710000
-2845-HSJCY     0.710000
-0151-ONTOV     0.708167
-3990-QYKBE     0.700000
-4706-AXVKM     0.700000
+2636-ALXXZ     0.667351
+3988-RQIXO     0.664224
+8414-MYSHR     0.661543
+8245-UMPYT     0.660537
+3320-VEOYC     0.660091
+1704-NRWYE     0.658948
+5935-FCCNB     0.657248
+1564-NTYXF     0.656822
+0722-TROQR     0.655259
+8051-HJRLT     0.654808
+2055-PDADH     0.654808
+5567-WSELE     0.654230
+2506-TNFCO     0.653694
+1016-DJTSV     0.652127
+9685-WKZGT     0.650675
+8149-RSOUN     0.650156
+4910-GMJOT     0.650156
+1363-TXLSL     0.648181
+2672-HUYVI     0.647293
+8739-XNIKG     0.645517
+4145-UQXUQ     0.645038
+7450-NWRTR     0.643992
+1273-MTETI     0.643821
+7206-PQBBZ     0.642920
+8875-AKBYH     0.642801
+4529-CKBCL     0.642654
+7760-OYPDY     0.642654
+6357-JJPQT     0.642654
+6474-FVJLC     0.642143
+5229-PRWKT     0.642143
+2691-NZETQ     0.641880
+4210-QFJMF     0.641537
+2004-OCQXK     0.641537
+4614-NUVZD     0.641537
+2609-IAICY     0.641029
+8808-ELEHO     0.639819
+4415-IJZTP     0.639147
+9306-CPCBC     0.639147
+3199-XGZCY     0.639147
+1320-HTRDR     0.639147
+9878-TNQGW     0.639066
+2868-MZAGQ     0.639066
+6521-YYTYI     0.638759
+7074-IEVOJ     0.638364
+1640-PLFMP     0.637893
+4282-YMKNA     0.637766
+3398-FSHON     0.637470
+0122-OAHPZ     0.637381
+4229-CZMLL     0.636891
+5835-BEQEU     0.636891
+0637-KVDLV     0.636891
+0404-SWRVG     0.636891
+8884-ADFVN     0.636567
+7245-NIIWQ     0.636285
+9408-SSNVZ     0.636285
+5228-EXCET     0.636120
+0195-IESCP     0.634903
+9957-YODKZ     0.634542
+7249-WBIYX     0.634300
+4795-KTRTH     0.633897
+2568-BRGYX     0.633814
+9717-QEBGU     0.633814
+3871-IKPYH     0.633603
+8010-EZLOU     0.633272
+8270-RKSAP     0.632432
+9681-OXGVC     0.632168
+7660-HDPJV     0.632159
+9728-FTTVZ     0.632159
+9947-OTFQU     0.632096
+2265-CYWIV     0.632045
+3223-DWFIO     0.631439
+7341-LXCAF     0.631399
+3317-VLGQT     0.631259
+1184-PJVDB     0.630957
+4060-LDNLU     0.630952
+9506-UXUSK     0.630868
+3494-JCHRQ     0.630209
+5382-SOYZL     0.629930
+5419-JPRRN     0.629912
+8290-YWKHZ     0.629398
+8835-VSDSE     0.629318
+9094-AZPHK     0.628543
+9253-QXKBE     0.627759
+4283-FUTGF     0.627581
+2180-DXNEG     0.627505
+9490-DFPMD     0.627317
+0754-UKWQP     0.626415
+1769-GRUIK     0.626200
+5348-CAGXB     0.626037
+8861-HGGKB     0.625894
+6328-ZPBGN     0.625892
+8622-ZLFKO     0.625227
+0018-NYROU     0.625193
+5027-QPKTE     0.625105
+9172-ANCRX     0.625042
+5701-YVSVF     0.625028
+2528-HFYZX     0.624962
+9560-ARGQJ     0.624517
+8775-ERLNB     0.624371
+2737-YNGYW     0.624308
 
 > **Obs:** A lista completa está disponível no arquivo `top_100_churn_clients.csv`.
 
@@ -156,7 +158,7 @@ customerID  churn_proba
 
 ### Descrição Detalhada da Predição
 
-O modelo **Random Forest** identificou os 100 clientes acima como os mais propensos a churn, com base em padrões históricos.
+O modelo **Random Forest** foi ajustado para priorizar o acerto da classe YES (clientes que vão dar churn), utilizando balanceamento de classes e threshold reduzido.
 
 ---
 
@@ -178,48 +180,52 @@ O gráfico de importância das features foi salvo como:
 ---
 ## 6. Análise de Regressão Logística
 
-A regressão logística foi utilizada para identificar o impacto das variáveis no risco de churn.
+A regressão logística foi utilizada para identificar o impacto das variáveis no risco de churn. O modelo foi ajustado para priorizar o acerto da classe YES (clientes que vão dar churn), utilizando balanceamento de classes e threshold reduzido.
 
-**Acurácia:** 0.81
+**Acurácia:** 0.70
 
 **ROC AUC:** 0.84
+
+**Recall classe YES:** 0.86
+
+**F1-score classe YES:** 0.60
 
 **Classification Report:**
 ```
               precision    recall  f1-score   support
 
-           0       0.84      0.91      0.87      1036
-           1       0.67      0.53      0.59       373
+           0       0.92      0.64      0.76      1035
+           1       0.46      0.86      0.60       374
 
-    accuracy                           0.81      1409
-   macro avg       0.76      0.72      0.73      1409
-weighted avg       0.80      0.81      0.80      1409
+    accuracy                           0.70      1409
+   macro avg       0.69      0.75      0.68      1409
+weighted avg       0.80      0.70      0.71      1409
 ```
 
 **Confusion Matrix:**
 ```
-[[941  95]
- [176 197]]
+[[662 373]
+ [ 54 320]]
 ```
 
 **Top 15 Coeficientes (em valor absoluto):**
 
-| Feature                      |   Coeficiente |
-|:-----------------------------|--------------:|
-| account_Contract_Two year    |     -1.39643  |
-| account_Charges_Total_20.15  |      1.31481  |
-| account_Charges_Total_20.1   |      1.15952  |
-| account_Charges_Total_44.4   |      1.15892  |
-| account_Charges_Total_19.6   |      1.15331  |
-| account_Charges_Total_288.05 |      1.11958  |
-| account_Charges_Total_20.2   |      1.11758  |
-| account_Charges_Total_45.1   |      1.08429  |
-| account_Charges_Total_20.5   |      1.01806  |
-| account_Charges_Total_20.9   |      1.0132   |
-| account_Charges_Total_19.45  |      1.00561  |
-| account_Charges_Total_20.55  |      1.00002  |
-| account_Charges_Total_45.95  |      0.971733 |
-| account_Charges_Total_1099.6 |      0.939175 |
-| account_Charges_Total_3046.4 |      0.937054 |
+| Feature                       |   Coeficiente |
+|:------------------------------|--------------:|
+| account_Charges_Total_1052.35 |       1.67697 |
+| account_Charges_Total_1099.6  |       1.67612 |
+| account_Charges_Total_3046.4  |       1.67303 |
+| account_Charges_Total_20.1    |       1.66075 |
+| account_Charges_Total_5154.6  |       1.61468 |
+| account_Charges_Total_4820.15 |       1.59533 |
+| account_Charges_Total_1327.15 |       1.59301 |
+| account_Charges_Total_1021.8  |       1.59117 |
+| account_Charges_Total_6579.05 |       1.58243 |
+| account_Charges_Total_4481    |       1.56011 |
+| account_Charges_Total_2460.15 |       1.53957 |
+| account_Charges_Total_740.3   |       1.53927 |
+| account_Charges_Total_3563.8  |       1.53452 |
+| account_Charges_Total_3147.5  |       1.51793 |
+| account_Charges_Total_20.5    |       1.50585 |
 
 O gráfico dos coeficientes foi salvo como `logistic_regression_coefficients.png`.
