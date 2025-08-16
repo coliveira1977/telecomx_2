@@ -160,6 +160,51 @@ customerID  churn_proba
 
 O modelo **Random Forest** foi ajustado para priorizar o acerto da classe YES (clientes que vão dar churn), utilizando balanceamento de classes e threshold reduzido.
 
+Interpretação:
+
+Classe "No" (majoritária)
+
+Precision 0.95 → quando o modelo prevê "No", quase sempre acerta.
+
+Recall 0.29 → porém, o modelo só acerta 29% de todos os "No" reais; ele está prevendo poucos "No".
+
+F1 0.44 → baixa, porque o recall caiu muito.
+
+Classe "Yes" (minoritária)
+
+Precision 0.33 → quando o modelo prevê "Yes", só acerta 33% das vezes.
+
+Recall 0.96 → captura quase todos os "Yes" reais; ou seja, o modelo está prevendo “Yes” muito facilmente.
+
+F1 0.49 → ainda baixo, porque a precisão é baixa.
+
+2️⃣ Acurácia e médias
+
+Accuracy 0.47 → caiu para 47% porque o modelo erra muitas previsões da classe majoritária "No".
+
+Macro avg 0.64 / 0.62 / 0.47 → mostra que o desempenho médio entre as classes ficou equilibrado em recall, mas fraco no F1.
+
+Weighted avg 0.78 / 0.47 / 0.46 → média ponderada pela quantidade de casos (a maioria é "No"), indicando que o modelo está performando mal no geral.
+
+3️⃣ O que está acontecendo
+
+Quando você ajusta o threshold para ser mais “sensível” a detectar a classe minoritária (“Yes”):
+
+O modelo começa a prever muito mais “Yes”.
+
+Isso aumenta o recall da classe “Yes” (96%) — quase nenhum “Yes” real é perdido.
+
+Mas, ao mesmo tempo, erra muitos “No”, porque agora ele classifica erroneamente vários “No” como “Yes”.
+
+Resultado: a acurácia geral cai (47%) e a classe majoritária sofre.
+
+4️⃣ Resumo intuitivo
+
+Antes: o modelo era conservador, acertava "No", perdia "Yes".
+
+Agora: o modelo é agressivo para detectar "Yes", acertando quase todos, mas sacrificando a classe "No".
+
+Trade-off clássico: aumentar recall de uma classe geralmente reduz precisão e acurácia geral.
 ---
 
 ### Soluções para Reverter o Churn
