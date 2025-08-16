@@ -246,6 +246,43 @@ A regressão logística foi utilizada para identificar o impacto das variáveis 
    macro avg       0.69      0.75      0.68      1409
 weighted avg       0.80      0.70      0.71      1409
 ```
+Interpretação:
+
+Classe “No” (clientes que não vão churn)
+
+Precision 0.92 → quando o modelo prevê “No”, acerta 92% das vezes.
+
+Recall 0.64 → consegue detectar apenas 64% dos “No” reais; alguns “No” estão sendo classificados como “Yes” (trade-off do threshold).
+
+F1 0.76 → razoável, mas menor que precisão porque recall caiu.
+
+Classe “Yes” (clientes que vão churn)
+
+Precision 0.46 → das previsões de “Yes”, apenas 46% estão corretas.
+
+Recall 0.86 → consegue capturar 86% de todos os “Yes” reais.
+
+F1 0.60 → média ponderada entre precisão e recall, moderada.
+
+4️⃣ O que está acontecendo
+
+O modelo foi otimizado para detectar churn → priorizou recall alto da classe “Yes” (86%).
+
+Trade-off típico: ao aumentar recall de “Yes”, o modelo prevê “Yes” mais facilmente, o que reduz:
+
+precisão da classe “Yes” (muitos falsos positivos)
+
+recall da classe “No” (alguns “No” reais são classificados como “Yes”)
+
+A acurácia geral caiu para 70%, mas o objetivo do negócio (capturar clientes que podem churn) é atendido.
+
+5️⃣ Resumo intuitivo
+
+O modelo “erra mais no geral”, mas acerta a maioria dos clientes que vão churn.
+
+Isso é útil para retenção de clientes, pois é melhor identificar clientes em risco mesmo que alguns clientes que não vão churn sejam sinalizados erroneamente.
+
+Métricas como F1-score da classe Yes e ROC AUC são mais importantes que acurácia neste cenário de classe desbalanceada.
 
 **Confusion Matrix:**
 ```
